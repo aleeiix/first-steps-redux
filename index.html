@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>Redux</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <p>Valor: <span id="numero"></span></p>
+      <button id="aum" onclick="aumentar()">Aumentar</button>
+      <button id="dis" onclick="disminuir()">Disminuir</button>
+    </div>
+
+    <script type="text/javascript">
+      //REDUX GAME
+
+      // 1. STATE
+      var state = {
+        cantidad: 0
+      };
+
+      // 2. STORE --> Toma 2 parametros (REDUCER, STATE)
+      var store = Redux.createStore(reducer, state);
+
+      // 3. REDUCER
+      function reducer(state, action) {
+        var newState = Object.assign({}, state);
+
+        if (action.type === "AUM") {
+          newState.cantidad = state.cantidad + 1;
+          return newState;
+        } else if (action.type === "DIS") {
+          newState.cantidad = state.cantidad - 1;
+          return newState;
+        }
+
+        return state;
+      }
+
+      // 4. ACTION
+      var actionAumentar = {
+        type: "AUM"
+      };
+
+      var actionDisminuir = {
+        type: "DIS"
+      };
+
+      // 5. DISPATCH
+      // store.dispatch(actionAumentar);
+
+      function aumentar() {
+        store.dispatch(actionAumentar);
+      }
+
+      function disminuir() {
+        store.dispatch(actionDisminuir);
+      }
+
+      var numero = document.getElementById("numero");
+      var mostrarNumero = function() {
+        numero.innerHTML = store.getState().cantidad;
+      };
+      mostrarNumero();
+
+      store.subscribe(mostrarNumero);
+    </script>
+  </body>
+</html>
